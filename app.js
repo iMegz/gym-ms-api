@@ -6,6 +6,7 @@ const cors = require("./src/utils/cors");
 const { connect } = require("./src/utils/db");
 const express = require("express");
 const error = require("./src/middlewares/error");
+const subscriptionRouter = require("./src/routers/subscription");
 
 // Initiate express app
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
+app.use("/subscription", subscriptionRouter);
 
 // Error middleware
 app.use(error);

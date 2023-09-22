@@ -7,7 +7,7 @@ exports.getById = async function (req, res, next) {
     const { id } = req.params;
 
     try {
-        const subscription = await Model.findOne({ where: { id } });
+        const subscription = await Model.findByPk(id);
         const status = subscription ? 200 : 404;
         res.status(status).json(subscription);
     } catch (error) {
@@ -64,23 +64,6 @@ exports.create = async function (req, res, next) {
     }
 };
 
-// Delete subscription
-exports.deleteById = async function (req, res, next) {
-    const { id } = req.params;
-
-    try {
-        const rows = await Model.destroy({ where: { id } });
-
-        if (rows) log("subscriptionRemove"); // Log action to database
-
-        const msg = rows ? "Subscription deleted" : "Subscription not found";
-        const status = rows ? 200 : 404;
-        res.status(status).json({ msg });
-    } catch (error) {
-        next({ msg: "Failed to delete subscription" });
-    }
-};
-
 // Update subscription
 exports.update = async function (req, res, next) {
     const { id } = req.params;
@@ -119,5 +102,22 @@ exports.update = async function (req, res, next) {
         res.status(status).json({ msg });
     } catch (error) {
         next({ msg: "Failed to update subscription" });
+    }
+};
+
+// Delete subscription
+exports.deleteById = async function (req, res, next) {
+    const { id } = req.params;
+
+    try {
+        const rows = await Model.destroy({ where: { id } });
+
+        if (rows) log("subscriptionRemove"); // Log action to database
+
+        const msg = rows ? "Subscription deleted" : "Subscription not found";
+        const status = rows ? 200 : 404;
+        res.status(status).json({ msg });
+    } catch (error) {
+        next({ msg: "Failed to delete subscription" });
     }
 };
